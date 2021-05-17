@@ -329,6 +329,40 @@ export default class VirtualClock {
         return this;
     }
 
+    /**
+     * Detaches all previously attached time listener of the chosen time.
+     */
+    removeAllAt(time: number): VirtualClock {
+        // Track whether we removed anything
+        let hasRemoved = false;
+
+        // Loop over all listeners
+        for (const listener of this._timeListeners.keys()) {
+            const [listenerTime] = listener;
+            if (listenerTime === time) {
+                // Cancel the timeout
+                const listenerData = this._timeListeners.get(listener);
+                if (listenerData) {
+                    clearTimeout(listenerData[0]);
+                }
+
+                // Remove the listener
+                this._timeListeners.delete(listener);
+
+                // We have removed at least one listener
+                hasRemoved = true;
+            }
+        }
+
+        if (!hasRemoved) {
+            // When not found, throw an error
+            throw new Error('Time listener not found');
+        }
+
+        // Method chaining
+        return this;
+    }
+    
     // Getters
     /**
      * The current clock time.

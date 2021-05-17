@@ -50,6 +50,11 @@ export declare class VirtualClock {
     removeAt(time: number, callback: () => void): VirtualClock;
 
     /**
+     * Detaches all previously attached time listener of the chosen time.
+     */
+    removeAllAt(time: number): VirtualClock;
+
+    /**
      * The current clock time.
      */
     time: number;
